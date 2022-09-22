@@ -1,4 +1,4 @@
-public class UpdateFieldXController {
+public with sharing class UpdateFieldXController {
 
     public static void updateFieldX(List<Account> accounts){
         Set<Id> accountIds = new Set<Id>();
@@ -9,7 +9,7 @@ public class UpdateFieldXController {
         for(Account account: accounts){
             accountIds.add(account.Id);
         }
-        contacts = [SELECT AccountId, Id, FieldX__c FROM Contact where AccountId IN :accountIds];
+        contacts = [SELECT AccountId, Id, FieldX__c FROM Contact where AccountId IN :accountIds WITH SECURITY_ENFORCED];
         for(Account account: accounts){
             for(Contact contact: contacts){
                 contactIds.add(contact.Id);
@@ -18,8 +18,8 @@ public class UpdateFieldXController {
                 }
             }
         }
-        tasks = [SELECT Id, WhoId, FieldX__c FROM Task where WhoId IN :contactIds];
-        events = [SELECT Id, WhoId, FieldX__c FROM Event where WhoId IN :contactIds];
+        tasks = [SELECT Id, WhoId, FieldX__c FROM Task where WhoId IN :contactIds WITH SECURITY_ENFORCED];
+        events = [SELECT Id, WhoId, FieldX__c FROM Event where WhoId IN :contactIds WITH SECURITY_ENFORCED];
         for(Contact contact: contacts){
             for(Task task: tasks){
                  if(task.WhoId == contact.Id){

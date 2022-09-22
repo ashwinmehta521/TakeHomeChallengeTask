@@ -23,7 +23,7 @@ export default class DisplayUpcomingEventAndTask extends LightningElement {
             .then(result => {
                 this.data = result;
                 console.log('Data', this.data);
-                this.displayMessage = 'Upcoming Event: ' + result.event.Subject + ' in ' + result.numberDaysDueEvent + ' days ' + ' Upcoming Task: ' + result.task.Subject + ' in ' +  result.numberDaysDueTask + ' days';
+                this.displayMessage = 'Upcoming Event: ' + result.event.Subject + ' in ' + result.numberDaysDueEvent + ' days ' + 'and' + ' Upcoming Task: ' + result.task.Subject + ' in ' +  result.numberDaysDueTask + ' days';
                 
             })
             .catch(error => {

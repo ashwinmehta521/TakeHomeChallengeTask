@@ -1,4 +1,4 @@
-public class CreateEventOnContactClass {
+public with sharing class CreateEventOnContactClass {
 
     public static void createEventOnContact(List<Booking__c> listOfBookings){
         Set<Id> contactIdSet = new Set<Id>();
@@ -7,7 +7,7 @@ public class CreateEventOnContactClass {
         for(Booking__c booking:listOfBookings) {
             contactIdSet.add(booking.ContactId__c);
         }  
-        listOfContacts = [SELECT Id, Account.OwnerId FROM Contact where Id IN :contactIdSet];
+        listOfContacts = [SELECT Id, Account.OwnerId FROM Contact where Id IN :contactIdSet WITH SECURITY_ENFORCED];
         for(Contact contact:listOfContacts){
             Event event = new Event();
             event.WhoId = contact.Id;

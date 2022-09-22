@@ -1,4 +1,4 @@
-public class UpdateNextTaskNextEventController {
+public with sharing class UpdateNextTaskNextEventController {
 
     public static void updateNextTaskInsert(List<Task> tasks){
         Set<Id> contactIds = new Set<Id>();
@@ -6,10 +6,11 @@ public class UpdateNextTaskNextEventController {
         for(Task task: tasks){
             contactIds.add(task.WhoId);
         }
-        contacts = [SELECT Id, NextTask__c FROM Contact where Id IN :contactIds];
+        Date todayDate = date.today();
+        contacts = [SELECT Id, NextTask__c FROM Contact where Id IN :contactIds WITH SECURITY_ENFORCED];
         for(Task task: tasks){
             for(Contact contact: contacts){
-                if(task.WhoId == contact.Id){
+                if(task.WhoId == contact.Id && task.ActivityDate > todayDate){
                     contact.NextTask__c = task.Subject;
                 }
             }
@@ -24,7 +25,7 @@ public class UpdateNextTaskNextEventController {
             contactIds.add(task.WhoId);
         }
         Date todayDate = date.today();
-        contacts = [SELECT Id, NextTask__c FROM Contact where Id IN :contactIds];
+        contacts = [SELECT Id, NextTask__c FROM Contact where Id IN :contactIds WITH SECURITY_ENFORCED];
         for(Task task: tasks){
             for(Contact contact: contacts){
                 if(task.WhoId == contact.Id && task.ActivityDate > todayDate){
@@ -45,12 +46,12 @@ public class UpdateNextTaskNextEventController {
             contactIds.add(task.WhoId);
             taskIds.add(task.id);
         }
-        contacts = [SELECT Id, NextTask__c FROM Contact where Id IN :contactIds];
+        contacts = [SELECT Id, NextTask__c FROM Contact where Id IN :contactIds WITH SECURITY_ENFORCED];
         Date todayDate = date.today();
-        tasks = [SELECT Id, Subject FROM Task where WhoId IN :contactIds and Id NOT IN :taskIds and ActivityDate > :todayDate];
+        tasks = [SELECT Id, Subject, WhoId, ActivityDate FROM Task where WhoId IN :contactIds and Id NOT IN :taskIds and ActivityDate > :todayDate WITH SECURITY_ENFORCED];
         for(Task task: tasks){
             for(Contact contact: contacts){
-                if(task.WhoId == contact.Id){
+                if(task.WhoId == contact.Id && task.ActivityDate > todayDate){
                     contact.NextTask__c = task.Subject;
                 }
             }
@@ -64,10 +65,11 @@ public class UpdateNextTaskNextEventController {
         for(Event event: events){
             contactIds.add(event.WhoId);
         }
-        contacts = [SELECT Id, NextEvent__c FROM Contact where Id IN :contactIds];
+        Date todayDate = date.today();
+        contacts = [SELECT Id, NextEvent__c FROM Contact where Id IN :contactIds WITH SECURITY_ENFORCED];
         for(Event event: events){
             for(Contact contact: contacts){
-                if(event.WhoId == contact.Id){
+                if(event.WhoId == contact.Id && event.ActivityDate > todayDate){
                     contact.NextEvent__c = event.Subject;
                 }
             }
@@ -82,7 +84,7 @@ public class UpdateNextTaskNextEventController {
             contactIds.add(event.WhoId);
         }
         Date todayDate = date.today();
-        contacts = [SELECT Id, NextEvent__c FROM Contact where Id IN :contactIds];
+        contacts = [SELECT Id, NextEvent__c FROM Contact where Id IN :contactIds WITH SECURITY_ENFORCED];
         for(Event event: events){
             for(Contact contact: contacts){
                 if(event.WhoId == contact.Id && event.ActivityDate > todayDate){
@@ -102,12 +104,12 @@ public class UpdateNextTaskNextEventController {
             contactIds.add(event.WhoId);
             eventIds.add(event.id);
         }
-        contacts = [SELECT Id, NextEvent__c FROM Contact where Id IN :contactIds];
+        contacts = [SELECT Id, NextEvent__c FROM Contact where Id IN :contactIds WITH SECURITY_ENFORCED];
          Date todayDate = date.today();
-        events = [SELECT Id, Subject FROM Event where WhoId IN :contactIds and Id NOT IN :eventIds and ActivityDate > :todayDate];
+        events = [SELECT Id, Subject, WhoId, ActivityDate FROM Event where WhoId IN :contactIds and Id NOT IN :eventIds and ActivityDate > :todayDate WITH SECURITY_ENFORCED];
         for(Event event: events){
             for(Contact contact: contacts){
-                if(event.WhoId == contact.Id){
+                if(event.WhoId == contact.Id && event.ActivityDate > todayDate){
                     contact.NextEvent__c = event.Subject;
                 }
             }
